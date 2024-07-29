@@ -595,3 +595,342 @@ Gerenciar o acesso de pessoas usuárias no ambiente de computação em nuvem de 
 Os data centers da AWS estão organizados ao redor do mundo para armazenamento e processamento eficiente de dados e aplicações;
 O modelo de responsabilidade compartilhada estabelece as atribuições de segurança dos provedores e das pessoas usuárias para assegurar a proteção dos dados e aplicações em nuvem;
 Selecionar região e zonas de disponibilidade para serviços de computação na AWS.
+
+#### 29/07/2024
+
+@03-Criando instâncias
+
+@@01
+Virtualizando recursos
+
+Comentamos anteriormente que o serviço que vamos utilizar para a hospedagem deste website é uma instância do EC2 (Elastic Compute Cloud), um serviço de computação.
+Lançando uma instância do EC2
+Podemos digitar "EC2" na barra de pesquisa do console da AWS e clicar no primeiro item que aparece como resultado. Com isso, acessaremos o console do EC2.
+
+Cada serviço tem o seu próprio console, com alguns dashboards para verificar o que está sendo usado naquele serviço e também quais configurações de serviços estão disponíveis para uso.
+
+Na seção de "Instâncias" no menu lateral esquerda, clicaremos em "tipos de instância" para acessar os diferentes tipos de instância listados. Observe que cada uma dessas instâncias tem uma configuração diferente de CPU, arquitetura de processador, memória, etc. Por que isso acontece?
+
+Primeiramente, vamos definir esse termo.
+
+Uma instância é uma máquina virtual que estará hospedada na infraestrutura desse provedor de serviços em nuvem.
+Para exemplificar, vamos selecionar a t2.micro, a qual está coberta no período de uso gratuito. No painel inferior, na aba "Detalhes", são exibidas todas as configurações dessa instância, ou seja, sua capacidade de processamento e armazenamento de dados.
+
+Assim, podemos selecionar uma instância conforme o serviço que desejamos executar na nuvem.
+
+Agora, vamos clicar em "Ações" no menu superior direito e selecionar a opção Launch Instance (Lançar Instância). Com isso, somos redirecionamos para uma página de configurações da instância, onde teremos maior nível de detalhamento do que vamos selecionar em termos de configuração e especificação.
+
+Na seção "Nome e tags", vamos definir primeiramente um nome. No nosso caso, colocamos servidor_web. Esse nome é arbitrário, poderíamos ter escrito qualquer outro.
+
+E aí, a segunda seção é sobre as "imagens de aplicação e de sistema operacional". Em outras palavras, teremos uma instância, que será uma máquina virtual e, toda vez que temos uma máquina virtual, precisamos selecionar um sistema operacional.
+
+Quando nos referimos a uma máquina virtual, temos uma única infraestrutura de hardware e uma camada de software, que conhecemos como hipervisor, que faz o gerenciamento desse hardware.
+
+E, a partir dessa camada de hipervisor, podemos construir diferentes máquinas que estarão rodando com especificações e configurações diferentes. Por isso que agora vamos selecionar a configuração do sistema operacional que vai operar dentro daquela instância que estamos selecionando para a criação do nosso site.
+
+Então, vamos selecionar o sistema operacional que será executado dentro da instância t2.micro. Existem diferentes opções.
+
+Geralmente, para servidores que estarão na nuvem, o Linux é o sistema operacional padrão. Em alguns casos, você pode selecionar outro sistema operacional. Contudo, o Linux tem diferentes distribuições, dentre elas, o Ubuntu e o próprio Amazon Linux. Vamos selecionar essa distribuição da Amazon.
+
+Logo abaixo, são descritas as configurações da imagem desse sistema. Além disso, é muito importante que essa imagem esteja qualificada para o nível gratuito. Não queremos ter nenhum gasto extra criando essa máquina virtual.
+
+Depois, podemos conferir a descrição do sistema, a arquitetura de 64 bits e se o provedor está verificado.
+
+A terceira seção, intitulada "Tipo de instância", oferece uma descrição do tipo de instância com a qual estamos trabalhando. Observe que também está qualificada para o nível gratuito, que é uma característica importante.
+
+Ainda na página do processo de configuração, temos a seção de "Par de chaves". Vamos prosseguir sem um par de chaves nesse momento, embora seja uma opção não recomendada.
+
+Em "configurações de rede", definimos como as pessoas vão conseguir acessar essa instância. É a partir dessas configurações de rede, que detalharemos no decorrer do curso, que vamos atribuir quais endereços IP, ou seja, quais dispositivos terão acesso a essa instância e, por conseguinte, a aplicação que estará rodando dentro dela.
+
+Nesse caso, vamos selecionar agora a opção "Criar um grupo de segurança", que criará um grupo de segurança por padrão nesse processo de criação da instância. Manteremos as regras como "Permitir tráfego SSH de qualquer lugar".
+
+Em "configurar armazenamento", vamos deixar o armazenamento como "1x8 GiB gp3" conforme selecionado por padrão.
+
+Mais abaixo, temos um resumo de todas as configurações dessa instância. Então, antes de criar a instância, podemos verificar o tipo de servidor virtual, a imagem, que será o sistema operacional, o armazenamento, que são 8 gigabits.
+
+Além disso, há uma informação do nível gratuito. Sempre fique atento para se manter dentro dos limites do nível gratuito.
+
+Vamos executar a instância, clicando no botão de mesmo nome no canto inferior à direita.
+
+Execução da instância iniciada com êxito.
+Podemos expandir o log de execução para conferir se cada etapa foi concluída com sucesso.
+
+Voltando para a página de instâncias, vamos verificar que essa instância, servidor_web, já está pendente e já aparece seu endereço IP público. Vamos entender melhor cada uma dessas configurações na sequência.
+
+Entendendo a virtualização de recursos
+Notou como é simples criar uma máquina virtual usando uma instância da EC2 da AWS?
+
+Inclusive, poderíamos utilizar esse mesmo serviço se estivéssemos preparando um algoritmo de detecção de eventos, de objetos - já usando redes neurais e criando aplicações de inteligência artificial.
+
+Nesses casos, muitas vezes, precisamos processar um grande volume de dados. Não vamos comprar um PC com uma grande capacidade de processamento e boa placa de vídeo para ficar em casa e ser usada apenas ocasionalmente.
+
+Quando criamos uma instância com as configurações adequadas para execução de um determinado serviço, fazemos o seu uso durante o número de dias necessários para o processamento, verifica se os resultados foram satisfatórios. Tendo sido satisfatórios, simplesmente desprovisionamos essa instância e não precisamos pagar mais nada por ela.
+
+Desse modo, sempre teremos acesso às melhores configurações de hardware possíveis - sem precisar adquirir esse hardware que teria alto custo de investimento inicial e que se desatualizaria rapidamente. Sabemos que as tecnologias vão evoluindo conforme o tempo. Aliás, essa é uma das boas características da computação em nuvem.
+
+Diagrama comparativo que ilustra diferentes modelos de entrega de serviços de tecnologia da informação, especificamente On-Premises (local), IaaS (Infraestrutura como serviço), PaaS (Plataforma como serviço) e SaaS (Software como serviço). Cada coluna representa um modelo e possui retângulos (azuis e laranjas) que representam componentes tecnológicos como Aplicações, Dados, Runtime, Middleware, O/S (Sistema Operacional), Virtualização, Servidores, Armazenamento e Rede. Conforme movemos da esquerda para a direita, do modelo On-Premises para SaaS, o número de componentes gerenciados pelo usuário (em azul) diminui e, pelo provedor do serviço (em laranja), aumenta.
+Quando estamos trabalhando on-premises, ou seja, usando a infraestrutura local, temos que cuidar desde a aplicação, ou seja, desde a construção do website, até mesmo as configurações de rede, dos roteadores que estarão fazendo a conexão desse servidor físico com as redes de computadores, ou seja, com a internet.
+
+Quando optamos por um serviço de infraestrutura como um serviço (IaaS), como é o caso de criar uma instância para hospedar uma aplicação web, ou uma instância para fazer um trabalho de processamento, cuidamos apenas da parte da seleção e manutenção do sistema operacional que está sendo executado dentro dessa instância.
+
+Tudo que estiver abaixo do sistema operacional, na camada de virtualização, ficará aos cuidados do provedor do serviço que estivermos utilizando, como AWS, Azure ou Google Cloud.
+
+Quando selecionamos a plataforma como um serviço (PaaS), não vamos cuidar nem da máquina virtual - tudo isso será provido diretamente pela instância. Só vamos inserir os dados e as nossas aplicações para serem executadas sobre aquela plataforma.
+
+Agora, quando usamos o software como um serviço (SaaS), basicamente tudo ficará por conta do provedor. No caso, do Google Docs e Google Sheets, ficaria por conta da Google.
+
+Ao usar o on-premises, todas as responsabilidades ficam por nossa conta. Todos os blocos azuis ficam sob a nossa responsabilidade, enquanto os blocos laranja são os componentes que ficam sob a responsabilidade dos provedores de serviços de computação.
+
+Próximos passos
+Pois bem, agora que já criamos a instância e entendemos melhor o que são as instâncias e também algumas facilidades dos serviços de computação em nuvem, é hora de analisarmos como se dá o acesso a essa instância. Vamos lá?
+
+https://cdn1.gnarususercontent.com.br/1/795715/42532f26-7eab-44e2-ba7e-0df9a72be71e.png
+
+@@02
+Para saber mais: virtualização e a Nuvem
+
+A virtualização é uma tecnologia que permite a criação de múltiplos ambientes de computação isolados em um único hardware físico.
+Imagine um computador físico (máquina host) rodando várias máquinas virtuais (VMs), cada uma operando como um computador completo com seu próprio sistema operacional e recursos de hardware, como memória, processamento e armazenamento. Esse processo de virtualização de recursos é gerenciado por um software denominado hipervisor.
+
+Na hospedagem de websites, podemos usar, por exemplo, um único servidor físico para rodar múltiplos sites. Para isso, cada site deve operar com sua própria VM, garantindo que problemas em um site não afetem os outros. Além disso, podemos criar VMs para testar novos aplicativos em diferentes plataformas sem precisar de vários computadores físicos.
+
+Qual a relação entre virtualização e a nuvem?
+A computação em nuvem consiste na entrega de recursos de computação (como servidores, armazenamento e bancos de dados) pela internet, com pagamento sob demanda. Provedores de nuvem utilizam a virtualização para criar e gerenciar seus data centers de modo eficiente. Portanto, podemos dizer que a virtualização é a base da computação em nuvem.
+
+Ao hospedar um site na AWS, não precisamos nos preocupar com a manutenção do hardware. A AWS usa virtualização para garantir que tenhamos acesso aos recursos necessários. Se nosso site receber um aumento de tráfego, a AWS pode rapidamente alocar mais recursos computacionais para manter o bom desempenho.
+
+Assim, a virtualização de recursos adotada pela nuvem oferece flexibilidade e eficiência, permitindo que organizações e pessoas acessem recursos computacionais conforme suas demandas, sem a complexidade de gerenciar uma infraestrutura física.
+
+@@03
+Configurando regras de segurança
+
+No painel do EC2, acabamos de criar uma instância chamada servidor_web. Ao clicar sobre o ID dessa instância, seremos direcionados a uma página que contém todas as informações relativas à configuração e funcionamento da instância que criamos.
+Dentre essas informações, podemos observar algumas relacionadas a configurações de rede, como o endereço IPv4 público e privado. Isso significa que essa instância estará disponível na web. Queremos hospedar um website nela, por isso é muito importante que ela tenha esse acesso por meio da rede.
+
+Iremos clicar sobre o link de endereço aberto no item "DNS IPv4 público", que está no canto direito desse painel de informações, para testar se conseguimos acessar essa instância.
+
+Após aguardar um pouco, obtivemos como retorno que não foi possível acessar esse site. Essa nossa instância não está disponível na web. Vamos entender o que pode estar relacionado com isso?
+
+Entendendo grupos de segurança
+Quando colocamos uma instância no ar, um serviço, poderia ser até mesmo um contêiner, devemos nos atentar aos grupos de segurança. Apesar de ter um nome parecido com o grupo de usuários que conhecemos, é algo diferente.
+
+Voltando ao painel da instância de servidor_web, vamos descer a página e encontrar as abas com as opções de detalhes, monitoramento, segurança e redes. Selecionado "Segurança", podemos visualizar a seção de "grupos de segurança".
+
+Os grupos de segurança definem as regras de acesso à instância por meio da internet.
+Existem regras de entrada e regras de saída. Entrada se refere a todo o tráfego da rede que entra nessa instância, enquanto a saída se refere às respostas que a instância vai encaminhar através da rede.
+
+Atualmente, só temos uma regra de entrada nessa instância.
+
+Id da regra do grupo de segurança	Intervalo de porta	Protocolo	Origem	Grupos de segurança	…
+sgr-033d491c198bf699d	22	TCP	0.0.0/0	launch-wizard-14	…
+No momento que criamos essa instância, clicamos em criar grupo de segurança, e a única opção padrão que era a opção de SSH. Geralmente, a porta do SSH é a porta 22. SSH é um protocolo que usamos para acesso remoto a máquinas através da web.
+
+Também é especificado o tipo de protocolo que pode entrar nessa máquina, ou seja, o tráfego que é permitido, e a origem. Nos quatro octetos do endereço de rede, temos o zero.
+
+Isso significa que tráfegos a partir de qualquer origem, ou seja, a partir de qualquer endereço IP, estão autorizados a entrar na instância, usando o protocolo TCP e na porta 22.
+
+Por outro lado, ao analisar a saída, concluímos que ela está completamente aberta.
+
+Id da regra do grupo de segurança	Intervalo de porta	Protocolo	Destino	Grupos de segurança	…
+sgr-0c23e5dd04b922b31	Todos	Todos	0.0.0/0	launch-wizard-14	…
+Temos todas as portas, todos os protocolos e o destino pode ser qualquer endereço IP na rede.
+
+Configurando regras de acesso
+Qual o protocolo que geralmente utilizamos em um site? O protocolo HTTPS é o mais usado, pois é a versão segura do protocolo HTTP. Geralmente, esse protocolo opera na porta 443 - no caso da HTTP, na porta 80.
+
+Então, para que essa instância esteja disponível na web e atendendo a esse tipo de requisição, teremos que editar as regras de entrada, para permitirem esse tráfego na instância.
+
+Como fazer isso? Abaixo do nome da seção "grupos de segurança", vamos clicar no link com o ID da regra do grupo de segurança que nos permite acessar as configurações dessas regras e editá-las.
+
+Abaixo dos detalhes, encontramos as abas de regra de entrada e regra de saída. No canto superior direito da caixa dessa regra, clicaremos na opção de "Editar as regras de entrada" para fazer essa edição.
+
+Podemos adicionar ou modificar as regras. Atualmente, a única regra de entrada que temos é do tipo SSH.
+
+Vamos clicar no botão "Adicionar regra" na parte inferior que será do tipo HTTPS, que já por padrão entra na porta 443. Também vamos adicionar outra do tipo HTTP, na porta 80.
+
+Em ambos casos, vamos especificar a origem a partir de qualquer endereço de IP, ou seja, 0.0.0/0 em todos os octetos.
+
+Uma vez adicionado, precisamos clicar em "Salvar regras" para salvá-las.
+
+Regras de entrada do grupo de segurança modificadas com êxito no grupo de segurança.
+Feito isso, retornamos ao painel da instância para testar se conseguimos agora o acesso depois de haver editado as regras de entrada.
+
+Na instância servidor_web, vamos clicar novamente no endereço aberto do "DNS IPv4 público" e aguardar um pouco até obter uma resposta.
+
+Agora, a resposta foi um pouco diferente. Antes, havíamos recebido o aviso de que o site "demorou muito para responder", ou seja, ela não estava ouvindo essa requisição.
+
+Porém, agora, a mensagem indica que a conexão foi recusada. Ela respondeu mais rápido, ou seja, ela já está ouvindo as requisições HTTP e HTTPS.
+
+No entanto, não temos nada ainda dentro dessa instância. Só temos um sistema operacional que é o Amazon Linux que configuramos no momento da sua criação.
+
+Próximos passos
+Primeiramente, precisamos colocar um servidor web que vai ouvir essas requisições para o website e depois popularemos essa instância com o conteúdo do site propriamente dito.
+
+Então, vamos fazer essa instalação do servidor web?
+
+@@04
+Para saber mais: regras de segurança para tráfego em instâncias EC2 da AWS
+
+Ao configurar instâncias EC2 na AWS, é essencial definir regras de segurança para controlar o tráfego de rede. Isso garante que somente tráfego autorizado possa acessar nossas instâncias. Vamos entender os principais protocolos envolvidos nessas configurações e suas portas de operação?
+Protocolo SSH (Secure Shell)
+O SSH é um protocolo usado para acessar e gerenciar instâncias EC2 de forma segura e remota. Ele permite que pessoas administradoras e desenvolvedoras consigam acessar suas instâncias, executem comandos e realizem tarefas administrativas. O SSH opera na porta 22. Protocolo TCP (Transmission Control Protocol)
+
+TCP é um protocolo de comunicação que garante a entrega confiável de dados entre dispositivos na rede. Muitas aplicações utilizam TCP para comunicação estável e confiável. A porta utilizada pelo protocolo depende do serviço específico. A configuração de portas TCP específicas permite que essas aplicações funcionem adequadamente.
+
+Protocolo HTTP (HyperText Transfer Protocol)
+O HTTP é o protocolo básico para a transferência de páginas web e dados na internet. Ele é usado por navegadores para carregar websites. O HTTP opera na porta 80.
+
+Se você estiver hospedando um site ou aplicação web, deve permitir tráfego HTTP na porta 80 para que as pessoas usuárias possam acessar seu conteúdo.
+
+Protocolo HTTPS (HyperText Transfer Protocol Secure)
+O HTTPS é uma versão segura do HTTP, que utiliza criptografia para proteger a transferência de dados entre o navegador do usuário e o servidor. Isso é essencial para proteger informações sensíveis, como dados de login e transações financeiras. O HTTPS opera na porta 443.
+
+Permitir tráfego HTTPS na porta 443 é essencial para garantir a segurança e privacidade dos dados das pessoas usuárias ao acessar sua aplicação web.
+
+@@05
+Configurando o acesso a aplicações
+
+Na reunião semanal da equipe, você ficou responsável pela definição do tráfego de acesso ao novo website de sua organização. Sua prioridade é garantir o amplo acesso na internet e a segurança. O website estará pronto e disponível em alguns dias em uma instância EC2 da AWS.
+Quais configurações de regras de segurança para instância EC2 é a mais adequada para hospedagem do site?
+
+Permitir todo o tráfego de entrada (0.0.0.0/0) na porta 80 (HTTP) e 443 (HTTPS), e bloquear todo o tráfego de saída.
+ 
+Permitir todo o tráfego de entrada pode facilitar o acesso ao website, mas bloquear todo o tráfego de saída pode impedir serviços essenciais do servidor, como atualizações de segurança ou comunicações com bancos de dados externos.
+Alternativa correta
+Permitir tráfego de entrada nas portas 80 (HTTP) e 443 (HTTPS) de qualquer endereço (0.0.0.0/0) e restringir o tráfego de saída apenas para serviços essenciais.
+ 
+Esta configuração equilibra segurança e acessibilidade, permitindo acesso público ao website através das portas padrão para web, enquanto limita o tráfego de saída a operações necessárias, minimizando o risco de atividades maliciosas.
+Alternativa correta
+Permitir tráfego de entrada e saída apenas na porta 22 (SSH) para todos os endereços (0.0.0.0/0).
+ 
+Alternativa correta
+Permitir tráfego de entrada nas portas 80 (HTTP), 443 (HTTPS), e 22 (SSH) de qualquer endereço (0.0.0.0/0), e permitir todo o tráfego de saída.
+ 
+Alternativa correta
+Bloquear todo o tráfego de entrada e saída, exceto na porta 22 (SSH) para endereços IP específicos.
+
+@@06
+Acessando a instância via SSH
+
+Para conseguir instalar o servidor web nessa instância, podemos fazer um acesso remoto a ela, usando o protocolo SSH, que já estava com uma regra definida no ato de criação da instância.
+Como fazemos esse acesso remoto à instância? Precisamos configurar um par de chaves de segurança para estabelecer o acesso entre o terminal do nosso dispositivo, no caso, um notebook, e a instância que está rodando no data center da Amazon.
+
+Configurando par de chave de segurança
+Vamos expandir o menu lateral do painel EC2, descer até o item "Rede e segurança" e clicar em "Pares de chaves". No canto superior direito, clicaremos no botão laranja "Criar par de chaves".
+
+Na página de criação de chaves, vamos primeiro dar um nome para essa chave. Podemos chamá-la de chave_instancia.
+
+Em seguida, temos o campo de tipo de par de chaves, onde lidamos com algoritmos de criptografia. Temos dois tipos de algoritmos: o algoritmo RSA, que é uma versão tradicional e tem uma grande compatibilidade com uma variedade de sistemas; e o ED25519, que é mais moderno, apresenta melhor desempenho e também oferece melhor nível de segurança. Podemos selecionar, por exemplo, o ED25519.
+
+Para o formato de arquivo de chave privada, selecionamos o .pem, que é para uso do SSH. Não vamos adicionar nenhuma tag, portanto, já podemos criar esse par de chaves.
+
+No momento que clicamos no botão "Criar par de chaves" no canto inferior direito, foi feito um download com o nome do par de chaves que criamos, chave_instancia.pem de 387 bytes.
+
+A AWS gerou esse par de chaves, que deve ser salvo no dispositivo e deve ser utilizado toda vez que fizermos uma requisição de acesso SSH.
+
+Com essa chave armazenada no nosso dispositivo, e a mesma chave armazenada na instância, toda vez que fizermos uma requisição de acesso SSH, a AWS vai fazer uma comparação para verificar se estamos com as chaves corretas para acessar uma determinada instância.
+
+É um mecanismo de segurança para assegurar que não tenhamos acessos não autorizados à nossa instância.
+
+Acessando instância via SSH
+Estamos trabalhando no ambiente Windows. No entanto, faremos esse acesso remoto usando o ambiente Linux via WSL. Temos um Ubuntu dentro do WSL.
+
+Vamos mover esse arquivo que contém as chaves para dentro do home desse usuário do Ubuntu. Dentro desse diretório de arquivos, vamos acessar "Linux > Ubuntu > home" e, vamos mover o arquivo baixado para dentro do usuário "lucasrm".
+
+Agora que já temos a chave chave_instancia.pem salva nesse diretório, vamos acessar esse ambiente, usando o CMD.
+
+No menu do Windows, buscamos "cmd" para acessar o prompt de comando. No botão "Abrir uma nova guia" dessa aba, vamos escolher o ambiente Ubuntu.
+
+Com o ambiente Ubuntu aberto no WSL, digitamos o comando ssh -i e colocamos o caminho onde a chave se encontra. Nesse caso, está na home do usuário lucasrm, e o nome do arquivo é chave_instancia.pem.
+
+ssh -i /home/lucasrm/chave_instancia.pem
+COPIAR CÓDIGO
+Agora, precisamos inserir o endereço do dispositivo que queremos acessar usando esse protocolo.
+
+Para isso, devemos verificar qual é o endereço IP público da instância. No protocolo SSH, colocamos o nome do usuário com o qual desejamos acessar, o arroba e depois o endereço IP desse dispositivo. Já que não configuramos nenhum usuário, colocaremos ec2-user que é o nome de usuário padrão de uma instância.
+
+Agora temos que pegar o endereço IP dessa instância. Para isso, vamos acessar o painel EC2 no navegador e selecionar o recurso "Instâncias (em execução)".
+
+Clicamos no ID da instância servidor_web e copiamos o endereço que vamos utilizar, localizado no campo "DNS IPv4 público".
+
+Voltando no terminal, vamos colar esse endereço e apertar "Enter".
+
+ssh -i /home/lucasrm/chave_instancia.pem ec2-user@ec2-3-138-109-77.us-east-2.compute.amazonaws.com
+COPIAR CÓDIGO
+Ao tentar acessar, aparece a mensagem "Are you sure that you want to connect?". Como estamos seguros que queremos acessar, escrevemos yes para confirmá-lo.
+
+Permission denied
+A permissão foi negada, pois já um detalhe para o qual não nos atentamos nesse processo.
+
+Associando par de chave e instância
+Criamos um par de chaves, mas para acessar uma instância, esse par de chaves deve estar associado com uma instância. A AWS tem o par de chaves que criamos, mas se não estiver associado a nenhum serviço, não podemos acessar esse serviço.
+
+É preciso associar esse par de chaves que criamos com a instância que queremos acessar.
+
+Retornamos ao ambiente Ubuntu do WSL para fazer a coleta da chave pública que está armazenada no nosso computador.
+
+Para isso, mudamos o modo de acesso com o comando change mode do arquivo, para evitar um acesso não autorizado. Assim, digitamos chmod, o código 600 e o caminho onde vamos encontrar a chave que queremos acessar, que é /home/lucasrm/chave_instancia.pem.
+
+chmod 600 /home/lucasrm/chave_instancia.pem
+COPIAR CÓDIGO
+Agora, para obter a chave pública que está armazenada, usamos o comando ssh-keygen, colocamos a opção -y -f seguido do diretório onde a chave se encontra, que é /home/lucasrm/chave_instancia.pem.
+
+ssh-keygen -y -f /home/lucasrm/chave_instancia.pem
+COPIAR CÓDIGO
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMw/32L05cPbbewwegEADL4g2b4HyYn3ZHtbj3IGX41
+Copiaremos a chave para armazená-la na instância usando o EC2 Connect.
+
+No EC2 Instance Connect, inserimos o seguinte comando:
+
+nano ~/.ssh/authorized_keys
+COPIAR CÓDIGO
+Assim, temos um arquivo de texto onde estarão salvas todas as chaves que vão permitir acesso a essa instância usando o protocolo SSH.
+
+Nosso papel agora é copiar a chave, incluindo a parte do ssh-ed25519, que é o algoritmo que foi utilizado para gerar essa chave, e mais a chave pública para salvar dentro desse editor de texto.
+
+Voltando no terminal, selecionamos e copiamos com "Ctrl + C" toda a linha que foi gerada a partir do comando ssh-keygen. Em seguida, vamos colá-la dentro do editor de texto do EC2 Connect com o "Ctrl + V".
+
+Feito isso, apertamos "Ctrl + X" para sair. Iremos salvar e manter o mesmo nome de arquivo apertando "Enter". Não podemos mudar o nome porque senão a chave não será encontrada.
+
+Agora, sim, conseguiremos fazer o acesso SSH da máquina. Vamos testar?
+
+Não precisamos nem digitar novamente todo aquele comando para fazer o acesso SSH. Basta usar a tecla de seta para cima até encontrar o comando ssh -i e o caminho dos diretórios onde a nossa chave se encontra e depois o usuário, o arroba, o endereço IP público dessa nossa instância.
+
+ssh -i /home/lucasrm/chave_instancia.pem ec2-user@ec2-3-138-109-77.us-east-2.compute.amazonaws.com
+COPIAR CÓDIGO
+Após dar um "Enter", entramos na instância. Com isso, conseguimos fazer a instalação no servidor web na sequência.
+
+@@07
+Faça como eu fiz: acesso remoto às instâncias EC2
+
+As aplicações do acesso remoto às instâncias EC2 utilizando o protocolo SSH (Secure Shell) são diversas. Trata-se de uma prática fundamental para a manutenção e administração de servidores, permitindo a realização de atualizações e configurações sem necessidade de acesso físico ao hardware.
+Além disso, o protocolo SSH é utilizado para transferência de arquivos de forma segura entre o computador local e a instância EC2, facilitando a implementação de aplicações.
+
+Entender como utilizar o protocolo SSH é um passo importante para garantir o gerenciamento eficiente e seguro de instâncias na AWS. Que tal explorar como acessar a instância EC2 criada usando SSH?
+
+Siga os seguintes passos:
+
+Crie uma nova chave SSH;
+Faça o download do arquivo de chave privada;
+Acesse a chave pública associada à chave privada pelo terminal;
+Abra uma conexão com a instância da AWS que deseja acessar, pelo console;
+Use a chave privada armazenada no seu computador para acessar a instância EC2 via SSH.
+Para conferir detalhes sobre esse processo, conforme realizado durante a aula, clique na Opinião da pessoa instrutora.
+
+Para acessar uma instância EC2 via SSH sem ter inicialmente configurado uma chave de acesso, é necessário seguir alguns passos.
+Primeiro, no AWS Management Console, vá para o serviço EC2 e selecione a opção de criar uma nova chave SSH. Ao criar a chave, faça o download do arquivo de chave privada (.pem) e armazene-o em um local seguro no seu computador.
+
+Depois de fazer o download da chave privada, você precisará revelar a chave pública correspondente. No terminal, use o comando ssh-keygen -y -f /caminho/para/sua-chave-privada.pem, substituindo /caminho/para/sua-chave-privada.pem pelo caminho do arquivo de chave privada. Como resultado deste comando, você terá acesso a chave pública associada à chave privada arquivada em seu computador.
+
+Em seguida, acesse o console do AWS Management Console e vá para o painel de instâncias EC2. Selecione a instância que deseja acessar e clique na opção "Connect". Escolha "EC2 Instance Connect" para abrir uma conexão com a instância. Uma vez conectado, você precisará adicionar a chave pública revelada ao arquivo ~/.ssh/authorized_keys da instância. Copie a chave pública gerada anteriormente e cole-a no arquivo authorized_keys usando o editor de texto nano na instância.
+
+Finalmente, use a chave privada armazenada no seu computador para acessar a instância EC2 via SSH. No terminal, utilize o comando ssh -i /caminho/para/sua-chave-privada.pem ec2-user@seu-endereço-ip. Não se esqueça de substituir /caminho/para/sua-chave-privada.pem pelo caminho da chave privada e seu-endereço-ip pelo endereço IP da instância. Assim, você estará conectado de forma segura a sua instância EC2 remotamente.
+
+@@08
+O que aprendemos?
+
+Nessa aula, você aprendeu como:
+A nuvem virtualiza recursos computacionais para oferta de serviços;
+Criar e configurar instâncias EC2 na AWS para hospedagem de websites e aplicações;
+Definir regras de segurança na AWS para permitir o acesso às aplicações em execução na instância EC2 por meio da internet;
+Utilizar o protocolo SSH para acessar instâncias EC2 de modo seguro a partir de qualquer dispositivo conectado na internet.
